@@ -43,11 +43,10 @@ jobs:
           DOCKER_CONTENT_TRUST_ROOT_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           DOCKER_CONTENT_TRUST_SERVER: https://notary.docker.io
 
-      env:
-        GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-        GPG_TTY: $(tty)
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GPG_TTY: $(tty)
 
-  - name: Scan for vulnerabilities
-    uses: crazy-max/ghaction-container-scan@v3
-    with:
-      image: ghcr.io/${{github.repository}}/financial-web-app:${{ github.sha }}
+      - name: Scan for vulnerabilities
+        uses: crazy-max/ghaction-container-scan@v3
+        with:
+          image: ghcr.io/${{github.repository}}/financial-web-app:${{ github.sha }}
