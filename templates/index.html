@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Data Dashboard</title>
+</head>
+<body>
+    <h1>Financial Data Dashboard</h1>
+
+    <h2>Cryptocurrency Data</h2>
+    <ul id="cryptoList">
+        {% for symbol, price in crypto_data.items() %}
+            <li>{{ symbol }}: ${{ price }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>ETF Data</h2>
+    <ul id="etfList">
+        {% for symbol, value in etf_data.items() %}
+            <li>{{ symbol }}: ${{ value }}</li>
+        {% endfor %}
+    </ul>
+
+    <script type="application/javascript" src="{{ url_for('static', filename='js/update_data.js') }}"></script>
+</body>
+</html>

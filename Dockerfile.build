@@ -1,0 +1,20 @@
+# Dockerfile.build
+FROM python:3.9-slim
+
+# Set the working directory to /src
+WORKDIR /src
+
+# Copy the source code to the container
+COPY src /src
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r /src/requirements.txt
+
+# Copy the templates folder
+COPY templates /src/templates
+
+# Expose the port that Flask will run on
+EXPOSE 5000
+
+# Set the command to run the application
+CMD ["python", "app.py"]
