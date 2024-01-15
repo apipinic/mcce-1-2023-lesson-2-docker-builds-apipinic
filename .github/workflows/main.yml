@@ -6,8 +6,9 @@ on:
       - main
 
 jobs:
-  build_and_sign:
-    runs-on: ubuntu-22.04  # Specify Ubuntu 22.04 here
+  build_image:
+    name: Build, Sign, and Scan Container Image
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
