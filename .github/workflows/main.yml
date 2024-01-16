@@ -49,4 +49,10 @@ jobs:
             --push .
           echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
 
-      # Add additional steps here (e.g., signing the image with Cosign, scanning for vulnerabilities)
+      - name: Sign image with a key
+        run: |
+          cosign sign --yes --key env://COSIGN_PRIVATE_KEY  ghcr.io/${{ github.repository }}:latest
+        env:
+            COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+            COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+
