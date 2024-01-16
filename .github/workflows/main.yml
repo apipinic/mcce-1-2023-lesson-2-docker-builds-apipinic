@@ -36,19 +36,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish Dockerfile
-        uses: docker/build-push-action@v4
-        id: build-and-push
-        with:
-          context: .
-          file: ./Dockerfile
-          platforms: linux/amd64,linux/arm/v7,linux/arm64
-          push: true
-          tags: ghcr.io/${{ github.repository }}:latest
-
-      - name: Sign image with a key
+      - name: Build and Push Docker Image
         run: |
-          cosign sign --yes --key env://COSIGN_PRIVATE_KEY ghcr.io/${{ github.repository }}:latest
-        env:
-          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
-          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+          IMAGE_NAME=ghcr.io/${{ github.repository }}/financial-web-app:latest
+          docker buildx create --use
+          docker buildx inspect --bootstrap
+          docker buildx build \
+            --file ./Dockerfile.build \
+            --platform linux/amd64,linux/arm64 \
+            --tag $IMAGE_NAME \
+            --output=type=registry \
+            --push .
+          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
+
+      # Add additional steps here (e.g., signing the image with Cosign, scanning for vulnerabilities)
