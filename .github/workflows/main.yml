@@ -46,8 +46,11 @@ jobs:
 
       - name: Sign Docker Image
         run: |
-          echo "${{ secrets.COSIGN_KEY_PASSPHRASE }}" | cosign sign --key cosign.key --password-file /dev/stdin ghcr.io/${{ github.repository }}/financial-web-app:latest
-          echo "${{ secrets.COSIGN_KEY_PASSPHRASE }}" | cosign sign --key cosign.key --password-file /dev/stdin ghcr.io/${{ github.repository }}/financial-web-app:${{ github.sha }}
+          export COSIGN_PASSWORD=${{ secrets.COSIGN_KEY_PASSPHRASE }}
+          cosign sign --key cosign.key ghcr.io/${{ github.repository }}/financial-web-app:latest
+          cosign sign --key cosign.key ghcr.io/${{ github.repository }}/financial-web-app:${{ github.sha }}
+        env:
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_KEY_PASSPHRASE }}
 
       - name: Scan for vulnerabilities
         uses: crazy-max/ghaction-container-scan@v3
